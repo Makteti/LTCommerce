@@ -1,11 +1,16 @@
-from flask_sqlalchemy import SQLAlchemy
+from peewee import Model, SqliteDatabase, CharField
 
-db = SQLAlchemy()
+db = SqliteDatabase('warehouse.db')
 
-class Item(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    status = db.Column(db.String(20), default='Available')
+class BaseModel(Model):
+    class Meta:
+        database = db
+
+class Item(BaseModel):
+    name = CharField()
+    status = CharField(default='Available')
 
 def init_app(app):
-    db.init_app(app)
+    app.db = db
+    app.db.connect()
+    app.db.create_tables([Item], safe=True)

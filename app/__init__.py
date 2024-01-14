@@ -1,14 +1,36 @@
-from flask import Flask
+# app/__init__.py
 
-def create_app():
-    app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///warehouse.db'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+from bottle import Bottle, template, request, redirect
+from .models import Item, init_app
 
-    from .models import init_app
-    init_app(app)
+app = Bottle()
 
-    from .routes import main_bp
-    app.register_blueprint(main_bp)
+def my_url_for(endpoint):
+    # Your custom URL generation logic here
+    return f'/{endpoint}'
 
-    return app
+@app.route('/')
+def index():
+    items = Item.select()
+    return template('views/index', items=items)
+
+@app.route('/add', method='POST')
+def add_item():
+    name = request.forms.get('name')
+    Item.create(name=name)
+    return redirect('/')
+
+@app.route('/delete/<item_id:int>')
+def delete_item(item_id):
+    item = Item.get(Item.id == item_id)
+    item.delete_instance()
+    return redirect(my_url_for('index'))
+
+@app.route('/change_status/<item_id:int>')
+def change_status(item_id):
+    item = Item.get(Item.id == item_id)
+    item.status = 'Unavailable' if item.status == 'Available' else 'Available'
+    item.save()
+    return redirect(my_url_for('index'))
+
+init_app(app)

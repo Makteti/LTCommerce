@@ -1,0 +1,29 @@
+<!-- views/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Management System</title>
+</head>
+<body>
+    <h1>Warehouse Management System</h1>
+
+    <ul>
+        % for item in items:
+            <li>
+                {{ item.name }} - Status: {{ item.status }}
+                <a href="/delete/{{ item.id }}">Delete</a>
+                <a href="/change_status/{{ item.id }}">Change Status</a>
+            </li>
+        % end
+    </ul>
+
+    <form action="/add" method="post">
+        <label for="name">Item Name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Add Item</button>
+    </form>
+</body>
+</html>
