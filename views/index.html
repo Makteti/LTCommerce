@@ -18,14 +18,6 @@
             white-space: nowrap;
         }
 
-        .status-text {
-            width: 80px;
-            text-align: center;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-
         .status-available {
             background-color: green;
             color: white;
@@ -46,15 +38,19 @@
         <ul class="list-group list-group-flush">
             % for item in items:
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>{{ item.name }}</span>
-                    <span class="status-text {% if item.status == 'Available' %}status-available{% else %}status-unavailable{% end %}">{{ item.status }}</span>
-                    <div class="btn-group" role="group">
-                        <form action="/delete/{{ item.id }}" method="post">
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                        <form action="/change_status/{{ item.id }}" method="post">
-                            <button type="submit" class="btn btn-warning btn-sm">Change Status</button>
-                        </form>
+                    <div class="col-md-6">
+                        <span>{{ item.name }}</span>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="badge status-badge {% if item.status == 'Available' %}status-available{% else %}status-unavailable{% end %}">{{ item.status }}</span>
+                        <div class="btn-group" role="group">
+                            <form action="/delete/{{ item.id }}" method="post">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                            <form action="/change_status/{{ item.id }}" method="post">
+                                <button type="submit" class="btn btn-warning btn-sm">Change Status</button>
+                            </form>
+                        </div>
                     </div>
                 </li>
             % end
