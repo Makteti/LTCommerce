@@ -1,4 +1,4 @@
-<!-- views/index.html -->
+<!-- templates/index.html -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,8 +32,11 @@
 <body class="container mt-5">
 
     <div class="card">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header bg-primary text-white d-flex justify-content-between">
             <h1 class="card-title">Warehouse Management System</h1>
+            <form action="/logout" method="post">
+                <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
         </div>
         <ul class="list-group list-group-flush">
             % for item in items:
