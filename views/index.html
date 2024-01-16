@@ -6,24 +6,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warehouse Management System</title>
+
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <style>
+        .status-badge {
+            width: 80px;
+            display: inline-block;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .status-text {
+            width: 80px;
+            text-align: center;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .status-available {
+            background-color: green;
+            color: white;
+        }
+
+        .status-unavailable {
+            background-color: red;
+            color: white;
+        }
+    </style>
 </head>
-<body>
-    <h1>Warehouse Management System</h1>
+<body class="container mt-5">
 
-    <ul>
-        % for item in items:
-            <li>
-                {{ item.name }} - Status: {{ item.status }}
-                <a href="/delete/{{ item.id }}">Delete</a>
-                <a href="/change_status/{{ item.id }}">Change Status</a>
-            </li>
-        % end
-    </ul>
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h1 class="card-title">Warehouse Management System</h1>
+        </div>
+        <ul class="list-group list-group-flush">
+            % for item in items:
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>{{ item.name }}</span>
+                    <span class="status-text {% if item.status == 'Available' %}status-available{% else %}status-unavailable{% end %}">{{ item.status }}</span>
+                    <div class="btn-group" role="group">
+                        <form action="/delete/{{ item.id }}" method="post">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                        <form action="/change_status/{{ item.id }}" method="post">
+                            <button type="submit" class="btn btn-warning btn-sm">Change Status</button>
+                        </form>
+                    </div>
+                </li>
+            % end
+        </ul>
+        <div class="card-body">
+            <form action="/add" method="post">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Item Name:</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-success">Add Item</button>
+            </form>
+        </div>
+    </div>
 
-    <form action="/add" method="post">
-        <label for="name">Item Name:</label>
-        <input type="text" id="name" name="name" required>
-        <button type="submit">Add Item</button>
-    </form>
+    <!-- Add Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-LqzUd5K2voZst9EDmQz+SW9ULx74bUGR0pHTOdHu6PAZQKjNtP5NECUIIa6a1bo8" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 </body>
 </html>
