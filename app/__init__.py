@@ -6,7 +6,6 @@ from .models import Item, init_app
 app = Bottle()
 
 def my_url_for(endpoint):
-    # Your custom URL generation logic here
     return f'/{endpoint}'
 
 @app.route('/')
